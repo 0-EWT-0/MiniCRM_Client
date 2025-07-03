@@ -133,7 +133,7 @@ const submitNewLead = async () => {
 
   await leadStore.createLead(payload)
 
-  if (!leadStore.error?.value) {
+  if (!leadStore.error) {
     await leadStore.getAllLeads(3)
     showModal.value = false
     newLead.value = {
@@ -147,7 +147,6 @@ const submitNewLead = async () => {
     }
   }
 }
-
 
 const editLead = (lead: any) => {
   console.log('Editar lead', lead)
