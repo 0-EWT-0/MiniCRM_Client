@@ -15,6 +15,7 @@ export const useLeadStore = defineStore('lead', () => {
       error.value = null
       const data = await LeadService.getAllLeads(userId)
       leads.value = data.rows || data
+      console.log(data)
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error al cargar leads'
     } finally {

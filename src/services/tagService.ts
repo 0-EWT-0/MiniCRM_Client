@@ -3,15 +3,15 @@
 import axios from '@/config/axios'
 
 export interface Tag {
-  id: number
+  tag_id: number
   name: string
 }
 
 const baseURL = import.meta.env.VITE_API_URL
 
 export const TagService = {
-  async getAllTags(userId: number) {
-    const response = await axios.get(`${baseURL}/tag/getAllTags/${userId}`)
+  async getAllTags() {
+    const response = await axios.get(`${baseURL}/tag/getAllTags`)
     return response.data
   },
 }

@@ -10,12 +10,13 @@ export const useTagStore = defineStore('tag', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  async function getAllTags(userId: number) {
+  async function getAllTags() {
     try {
       loading.value = true
       error.value = null
-      const data = await TagService.getAllTags(userId)
+      const data = await TagService.getAllTags()
       tags.value = data.rows || data
+      console.log("tags", tags.value)
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error al cargar etiquetas'
     } finally {

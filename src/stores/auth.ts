@@ -1,32 +1,43 @@
-// src/stores/auth.store.ts
-
 import { defineStore } from 'pinia'
 import { AuthService } from '@/services/authService'
 import { ref } from 'vue'
 import axios from '@/config/axios'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref<string | null>(localStorage.getItem('token') || null)
-  const user = ref<{ name: string; email: string } | null>(null)
+  const token = ref<string | null>(null)
+  const user = ref<{ id: number; name: string; email: string } | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-  if (token.value) {
+
+  // ✅ Cargar usuario desde el token guardado en localStorage
+  function initializeUserFromToken() {
+    const storedToken = localStorage.getItem('token')
+    if (!storedToken) return
+
     try {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-      const payload = JSON.parse(atob(token.value.split('.')[1]))
+      const payload = JSON.parse(atob(storedToken.split('.')[1]))
+
+      // ⚠️ Asegúrate que tu JWT usa "data" y no "sessionData"
+      const session = payload.sessionData || payload.data
+
       user.value = {
-        name: payload.sessionData.name,
-        email: payload.sessionData.email,
+        id: session.id,
+        name: session.name,
+        email: session.email,
       }
+
+      token.value = storedToken
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`
     } catch (e) {
-      // Token inválido o corrupto, lo eliminamos
       console.warn('Token inválido detectado, limpiando sesión')
       token.value = null
+      user.value = null
       localStorage.removeItem('token')
       delete axios.defaults.headers.common['Authorization']
     }
   }
 
+  // ✅ Login del usuario y guarda el token
   async function login(email: string, password: string) {
     try {
       loading.value = true
@@ -36,16 +47,9 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (!res.token) throw new Error('Token no recibido')
 
-      token.value = res.token
       localStorage.setItem('token', res.token)
-
-      const payload = JSON.parse(atob(res.token.split('.')[1]))
-      user.value = {
-        name: payload.sessionData.name,
-        email: payload.sessionData.email,
-      }
-
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`
+      token.value = res.token
+      initializeUserFromToken()
     } catch (err: any) {
       error.value = err.response?.data?.message || err.message || 'Error de login'
     } finally {
@@ -53,6 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // ✅ Registro de nuevo usuario
   async function register(name: string, email: string, password: string, is_accepted: boolean) {
     try {
       loading.value = true
@@ -65,6 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // ✅ Cierre de sesión
   function logout() {
     token.value = null
     user.value = null
@@ -80,5 +86,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     logout,
+    initializeUserFromToken,
   }
 })
