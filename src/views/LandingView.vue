@@ -11,25 +11,15 @@
     <section class="contact-section" id="contacto">
       <h2>¡Contáctanos!</h2>
       <form @submit.prevent="handleSubmit" class="contact-form" novalidate>
-        <input
-          type="text"
-          v-model.trim="name"
-          placeholder="Tu nombre"
-          required
-        />
+        <input type="text" v-model.trim="name" placeholder="Tu nombre" required />
         <span v-if="!name && submitted" class="error">Nombre requerido</span>
 
-        <input
-          type="email"
-          v-model.trim="email"
-          placeholder="Correo electrónico"
-          required
-        />
+        <input type="email" v-model.trim="email" placeholder="Correo electrónico" required />
         <span v-if="!isValidEmail(email) && submitted" class="error">Correo inválido</span>
 
         <input
           type="tel"
-          v-model.trim="phone"
+          v-model.trim="number"
           placeholder="Teléfono (opcional)"
           pattern="\\+?[0-9\\-\\s]+"
         />
@@ -63,7 +53,7 @@ const contactStore = useContactStore()
 
 const name = ref('')
 const email = ref('')
-const phone = ref('')
+const number = ref('')
 const message = ref('')
 const submitted = ref(false)
 
@@ -77,12 +67,14 @@ const handleSubmit = async () => {
 
   if (!name.value || !isValidEmail(email.value) || !message.value) return
 
-  await contactStore.registerContact(name.value, email.value, phone.value, message.value)
+  console.log('Submitting contact:', { name: name.value, email: email.value, number: number.value })
+
+  await contactStore.registerContact(name.value, email.value, number.value)
 
   if (!contactStore.error) {
     name.value = ''
     email.value = ''
-    phone.value = ''
+    number.value = ''
     message.value = ''
     submitted.value = false
   }

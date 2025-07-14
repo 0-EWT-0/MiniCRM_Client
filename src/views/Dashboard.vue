@@ -117,7 +117,7 @@ async function handleSubmit() {
             {{ tag.name }}
           </option>
         </select>
-        <button @click="openModal">+ Agregar Lead</button>
+        <!-- <button @click="openModal">+ Agregar Lead</button> -->
       </div>
     </header>
 

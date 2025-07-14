@@ -5,15 +5,16 @@ import axios from '@/config/axios'
 interface Contact {
   name: string
   email: string
-  phone: string
-  message: string
+  number: string
+  id_tag_id: number
 }
 
 const baseURL = import.meta.env.VITE_API_URL
 
 export const ContactService = {
   async registerContact(data: Contact) {
-    const response = await axios.post(`${baseURL}/contact/registerContact`, data)
+    console.log('Registering contact:', data)
+    const response = await axios.post(`${baseURL}/leads/createLead`, data)
     return response.data
   },
 }
