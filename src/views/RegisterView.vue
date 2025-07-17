@@ -7,7 +7,7 @@
       <input type="email" v-model.trim="email" placeholder="Correo electrónico" required />
       <input type="password" v-model="password" placeholder="Contraseña" required />
 
-      <div class="g-recaptcha" data-sitekey="VITE_RECAPTCHA_SITE_KEY"></div>
+      <div id="recaptcha-container"></div>
 
       <label class="checkbox">
         <input type="checkbox" v-model="isAccepted" required />
@@ -30,6 +30,21 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
+import { onMounted } from 'vue'
+
+const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+
+onMounted(() => {
+  const waitForGrecaptcha = setInterval(() => {
+    if ((window as any).grecaptcha && (window as any).grecaptcha.render) {
+      clearInterval(waitForGrecaptcha)
+      ;(window as any).grecaptcha.render('recaptcha-container', {
+        sitekey: siteKey,
+      })
+    }
+  }, 100)
+})
+
 const auth = useAuthStore()
 const router = useRouter()
 
@@ -51,7 +66,6 @@ const handleSubmit = async () => {
     router.push('/login')
   }
 }
-
 </script>
 
 <style scoped>
