@@ -5,6 +5,7 @@ interface RegisterData {
   email: string
   password: string
   is_accepted: boolean
+  recaptchaToken: string
 }
 
 interface LoginData {

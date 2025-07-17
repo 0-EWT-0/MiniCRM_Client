@@ -58,11 +58,17 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ✅ Registro de nuevo usuario
-  async function register(name: string, email: string, password: string, is_accepted: boolean) {
+  async function register(
+    name: string,
+    email: string,
+    password: string,
+    is_accepted: boolean,
+    recaptchaToken: string,
+  ) {
     try {
       loading.value = true
       error.value = null
-      await AuthService.register({ name, email, password, is_accepted })
+      await AuthService.register({ name, email, password, is_accepted, recaptchaToken })
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error de registro'
     } finally {

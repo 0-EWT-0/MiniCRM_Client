@@ -189,78 +189,119 @@ async function handleSubmit() {
 .dashboard {
   padding: 2rem;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f7fb;
+  background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
   min-height: 100vh;
 }
 
 .dashboard-header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
 .dashboard-header h1 {
-  font-size: 1.8rem;
-  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
-.controls select,
-.controls button {
+.controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.controls select {
   padding: 0.6rem 1rem;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  background-color: white;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
   transition: all 0.3s ease;
+  color: #1e293b;
 }
 
 .controls button {
-  background-color: #4f46e5;
+  background-color: #6366f1;
   color: white;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   border: none;
-  cursor: pointer;
+  transition: background 0.3s;
 }
 .controls button:hover {
-  background-color: #4338ca;
+  background-color: #4f46e5;
 }
 
 .leads-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
+  background: white;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
 }
 
-.leads-table th,
+.leads-table thead {
+  background-color: #f8fafc;
+}
+
+.leads-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
 .leads-table td {
   padding: 0.9rem 1rem;
-  border-bottom: 1px solid #eee;
-  text-align: left;
+  color: #334155;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.leads-table select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
 }
 
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 50;
 }
 
 .modal-content {
-  background: #fff;
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: 18px;
   width: 90%;
-  max-width: 500px;
+  max-width: 520px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .form-styled input,
@@ -268,44 +309,59 @@ async function handleSubmit() {
 .form-styled select {
   width: 100%;
   padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background-color: #fdfdfd;
-  transition: border 0.2s ease;
+  background-color: #f9fafb;
+  transition: border-color 0.2s ease;
 }
+
 .form-styled input:focus,
 .form-styled textarea:focus,
 .form-styled select:focus {
-  border-color: #4f46e5;
+  border-color: #6366f1;
   outline: none;
+}
+
+.form-styled textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .modal-buttons button {
   padding: 0.6rem 1.2rem;
-  border-radius: 8px;
   font-size: 1rem;
-  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
 }
 
 .modal-buttons button[type='submit'] {
-  background-color: #4f46e5;
+  background-color: #10b981;
   color: white;
 }
+.modal-buttons button[type='submit']:hover {
+  background-color: #059669;
+}
 .modal-buttons button[type='submit']:disabled {
-  opacity: 0.7;
+  background-color: #6ee7b7;
   cursor: not-allowed;
 }
+
 .modal-buttons button[type='button'] {
-  background-color: #e5e7eb;
-  color: #333;
+  background-color: #f1f5f9;
+  color: #1f2937;
+}
+.modal-buttons button[type='button']:hover {
+  background-color: #e2e8f0;
 }
 
 .loader {

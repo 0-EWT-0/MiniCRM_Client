@@ -7,6 +7,8 @@
       <input type="email" v-model.trim="email" placeholder="Correo electrónico" required />
       <input type="password" v-model="password" placeholder="Contraseña" required />
 
+      <div class="g-recaptcha" data-sitekey="VITE_RECAPTCHA_SITE_KEY"></div>
+
       <label class="checkbox">
         <input type="checkbox" v-model="isAccepted" required />
         Acepto los <a href="#" target="_blank">términos y condiciones</a>
@@ -37,11 +39,19 @@ const password = ref('')
 const isAccepted = ref(false)
 
 const handleSubmit = async () => {
-  await auth.register(name.value, email.value, password.value, isAccepted.value)
+  const recaptchaResponse = (window as any).grecaptcha?.getResponse()
+
+  if (!recaptchaResponse) {
+    auth.error = 'Por favor, verifica el captcha.'
+    return
+  }
+
+  await auth.register(name.value, email.value, password.value, isAccepted.value, recaptchaResponse)
   if (!auth.error) {
     router.push('/login')
   }
 }
+
 </script>
 
 <style scoped>
